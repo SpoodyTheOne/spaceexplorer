@@ -42,7 +42,7 @@ io.on("connection", socket => {
   };
 
   socket.on("init", data => {
-    players[socket.id].name = {
+    players[socket.id] = {
         name: data.name,
         id: socket.id,
         pos: { x: 0, y: 0 },
