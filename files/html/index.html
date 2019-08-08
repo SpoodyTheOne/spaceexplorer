@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Space Explorer</title>
+    <style>
+      * {
+        margin: 0px;
+        padding: 0px;
+      }
+      canvas {
+        position: fixed;
+      }
+
+      #chatprompt {
+        width: 75%;
+        position: fixed;
+        left: 50%;
+        margin-left: -37.5%;
+        top:50%;
+        z-index:999;
+
+        border:none;
+        background:#000000aa;
+        outline:none;
+        color:white;
+        border-bottom: 2px solid white;
+        padding:5px;
+      }
+    </style>
+  </head>
+  <body>
+
+    <input id="chatprompt" style="display:none">
+
+  </body>
+  <script>var socketName = "<%= name %>"</script>
+  <script src="/script/jquery"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
+  <script src="/script/canvas"></script>
+  <script src="/script/camera"></script>
+  <script src="/script/planet"></script>
+  <script src="/script/game"></script>
+  <script src="/script/main"></script>
+</html>
