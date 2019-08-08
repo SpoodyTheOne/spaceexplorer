@@ -1,0 +1,25 @@
+{
+  "name": "space_explorer",
+  "version": "1.0.0",
+  "main": "index.js",
+  "dependencies": {
+    "ejs": "^2.6.2",
+    "express": "^4.17.1",
+    "socket.io": "^2.2.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SpoodyTheOne/spaceexplorer.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SpoodyTheOne/spaceexplorer/issues"
+  },
+  "homepage": "https://github.com/SpoodyTheOne/spaceexplorer#readme",
+  "description": ""
+}
