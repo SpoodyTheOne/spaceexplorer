@@ -134,21 +134,14 @@ function ui() {
   ctx.textBaseline = "top";
   ctx.font = "13px Arial";
 
-  chat.forEach(chat => {
-    var msg = "";
-    if (chat.id == null) {
-      msg = chat.msg;
-    } else {
-      msg = players[chat.id].name + ": " + chat.msg;
-    }
-  });
-
   chat.forEach((chat, i) => {
     var msg = "";
     if (chat.id == null) {
       msg = chat.msg;
-    } else {
+    } else if (typeof players[chat.id] != "undefined") {
       msg = players[chat.id].name + ": " + chat.msg;
+    } else {
+      msg = chat.id + ": " + chat.msg;
     }
 
     if (ctx.measureText(msg) > 200) {

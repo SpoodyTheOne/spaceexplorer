@@ -41,6 +41,13 @@ socket.on("players", data => {
       color: "#e33d3d"
     });
 
+    chat.forEach(c => {
+      if (c.id === data.old.id)
+      {
+        c.id = data.old.name;
+      }
+    })
+
     delete players[data.old.id];
   }
 
