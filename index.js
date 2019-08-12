@@ -9,7 +9,7 @@ const PORT = process.env.PORT || 80;
 var players = {};
 
 app.engine("html", require("ejs").renderFile);
-app.use(express.urlencoded());
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.get("/", (req, res) => {
@@ -25,6 +25,9 @@ app.get("/script/:script", (req, res) => {
 });
 
 io.on("connection", socket => {
+
+  console.log("Connection");
+
   players[socket.id] = {
     name: "connecting",
     id: socket.id,
@@ -34,6 +37,7 @@ io.on("connection", socket => {
     health: 100,
     cash: 100,
     minerals: {},
+    mass: 5,
     color:
       "#" +
       (Math.round(Math.random() * (16777215 - 11184810)) + 11184810).toString(
@@ -42,26 +46,15 @@ io.on("connection", socket => {
   };
 
   socket.on("init", data => {
-    players[socket.id] = {
-        name: data.name,
-        id: socket.id,
-        pos: { x: 0, y: 0 },
-        dir: { x: 0, y: 0 },
-        vel: { x: 0, y: 0 },
-        health: 100,
-        cash: 100,
-        minerals: {},
-        color:
-          "#" +
-          (Math.round(Math.random() * (16777215 - 11184810)) + 11184810).toString(
-            16
-          )
-      };
+    players[socket.id].name = data.name;
     io.emit("players", { players: players, new: players[socket.id] });
+    console.log("Initializing " + data.name);
+    console.log(players);
   });
 
   socket.on("players", () => {
     socket.emit("players", players);
+    console.log("sending players to " + players[socket.id].name);
   });
 
   socket.on("chat", data => {
@@ -75,11 +68,12 @@ io.on("connection", socket => {
   socket.on("move", data => {
     io.emit("move", data);
 
-    if (players[data.id]) players[data.id].pos = data.pos;
+    if (typeof players[data.id] != "undefined") players[data.id].pos = data.pos;
   });
 
   socket.on("disconnect", () => {
     io.emit("players", { players: players, old: players[socket.id] });
+    console.log("Player left " + players[socket.id].name)
     delete players[socket.id];
   });
 });
