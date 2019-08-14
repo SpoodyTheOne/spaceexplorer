@@ -1,33 +1,34 @@
 class Planet {
   constructor(x, y, s, m, r) {
-    this.pos = { x: x, y: y };
-    this.vel = { x: 0, y: 0 };
+    this.pos = {
+      x: x,
+      y: y
+    };
+    this.vel = {
+      x: 0,
+      y: 0
+    };
     this.size = s;
     this.mass = m;
     this.richness = r;
+    this.body = world.createBody({
+      type: "static",
+      position: planck.Vec2(this.pos.x,this.pos.y)
+    })
 
-    this.attract = function(other) {
-      if (Vector.distance(this.pos, other.pos) > this.size) {
-        var force =
-          (Constant.G * (this.mass * other.mass)) /
-          Vector.distance(this.pos, other.pos) ** 2;
+    this.body.createFixture(planck.Circle(planck.Vec2(0,0),this.size))
 
-        other.vel = Vector.add(
-          other.vel,
-          Vector.mult(Vector.normalized(Vector.sub(this.pos, other.pos)), {
-            x: force,
-            y: force
-          })
-        );
-      } else {
-        /*
-        other.pos = Vector.mult(Vector.normalized(Vector.sub(other.pos,this.pos)),{x:this.size,y:this.size});
-        */
-        other.vel = Vector.div(other.vel,{x:1.15,y:1.15});
-      }
+    this.attract = function (other) {
+      var force =
+        (Constant.G * (this.mass * other.m_mass)) /
+        Vector.distance(this.pos, other.getPosition()) ** 2;
+
+      var g = Vector.sub(this.pos, other.getPosition())
+
+      other.applyForceToCenter(planck.Vec2(g.x * force, g.y * force));
     };
 
-    this.draw = function() {
+    this.draw = function () {
       ctx.beginPath();
       var camPos = Camera.toCamPos(this.pos);
       ctx.ellipse(

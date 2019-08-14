@@ -24,6 +24,15 @@ app.get("/script/:script", (req, res) => {
   res.sendFile(__dirname + "/files/js/" + req.params.script + ".js");
 });
 
+app.get("/image/:img",(req,res) => {
+  res.sendFile(__dirname + "/files/images/" + req.params.img + ".png");
+})
+
+app.get("/mp3/:img",(req,res) => {
+  res.sendFile(__dirname + "/files/mp3/" + req.params.img + ".mp3");
+})
+
+
 io.on("connection", socket => {
 
   console.log("Connection");
@@ -42,7 +51,8 @@ io.on("connection", socket => {
       "#" +
       (Math.round(Math.random() * (16777215 - 11184810)) + 11184810).toString(
         16
-      )
+      ),
+      body:null
   };
 
   socket.on("init", data => {
