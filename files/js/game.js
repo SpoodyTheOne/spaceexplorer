@@ -1,5 +1,8 @@
 //#region game
 
+planck.internal.Settings.maxTranslation = 20
+planck.internal.Settings.maxTranslationSquared = planck.internal.Settings.maxTranslation * planck.internal.Settings.maxTranslation 
+
 var world = planck.World({
   gravity: planck.Vec2(0, 0)
 });
@@ -55,10 +58,10 @@ function game() {
     };
 
     if (!chatting) {
-      if (keys["w"]) dir.y -= 1;
+      if (keys["w"] || keys["W"]) dir.y -= 1;
       //if (keys["s"]) dir.y += 1;
-      if (keys["a"]) dir.x -= 1;
-      if (keys["d"]) dir.x += 1;
+      if (keys["a"] || keys["A"]) dir.x -= 1;
+      if (keys["d"] || keys["D"]) dir.x += 1;
     }
 
     var pos = {
@@ -227,6 +230,7 @@ function ui() {
   //#endregion
 
   if (advancedStats) {
+    ctx.fillStyle = "#00ff00";
     ctx.fillText("fps:" + fps, 0, 0);
     ctx.fillText("velocity: x:" + (Math.round(localPlayer.body.c_velocity.v.x * 100) / 100) + " y:" + (Math.round(localPlayer.body.c_velocity.v.y * 100) / 100), 0, 13);
     ctx.fillText("speed:" + Math.round(Vector.magnitude(localPlayer.body.c_velocity.v) * 100) / 100, 0, 13 * 2);
