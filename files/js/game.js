@@ -66,11 +66,6 @@ function game() {
       y: localPlayer.body.getPosition().y + localPlayer.body.c_velocity.v.y
     };
 
-    socket.emit("move", {
-      id: localPlayer.id,
-      pos: pos
-    });
-
     localPlayer.body.m_angularVelocity += dir.x / 26;
 
     var forward = {
@@ -80,11 +75,20 @@ function game() {
 
     if (dir.y != 0 && totalFrames % 2 == 0) {
       playSound("20hz");
+      particle({type:"rect",vel:forward,pos:Vector.add(localPlayer.body.getPosition(),Vector.mult(forward,{x:18,y:18})),size:8})
     }
 
     localPlayer.pos = pos;
 
     localPlayer.body.applyForceToCenter(planck.Vec2(forward.x, forward.y).mul(100 * dir.y, 100 * dir.y));
+
+    socket.emit("move", {
+      id: localPlayer.id,
+      pos: localPlayer.body.getPosition(),
+      vel: localPlayer.body.c_velocity.v,
+      ang: localPlayer.body.getAngle(),
+      angvel: localPlayer.body.m_angularVelocity
+    });
 
     //localPlayer.vel.x /= 1.15;
     //localPlayer.vel.y /= 1.15;
@@ -151,6 +155,10 @@ function game() {
   }
 
   ctx.textAlign = "center";
+
+  particles.forEach(p => {
+    p.draw();
+  })
 
   Object.keys(players).forEach(id => {
     var player = players[id];

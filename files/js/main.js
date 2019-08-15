@@ -10,33 +10,48 @@ var totalFrames = 0;
 var emptyPlayer = {
   name: "connecting",
   id: socket.id,
-  pos: { x: 0, y: 0 },
-  dir: { x: 0, y: 0 },
-  vel: { x: 0, y: 0 },
+  pos: {
+    x: 0,
+    y: 0
+  },
+  dir: {
+    x: 0,
+    y: 0
+  },
+  vel: {
+    x: 0,
+    y: 0
+  },
   health: 100,
   cash: 100,
   minerals: {},
-  color:
-    "#" +
+  color: "#" +
     (Math.round(Math.random() * (16777215 - 11184810)) + 11184810).toString(16)
 };
 
 var frameCount = 0;
 var fps = 0;
 
-socket.emit("init", { name: socketName });
+socket.emit("init", {
+  name: socketName
+});
 
 socket.on("players", data => {
   //console.log(data.players);
 
+    Object.keys(players).forEach(id => {
+      var player = players[id];
+      world.destroyBody(player.body);
+    })
+
   players = data.players;
-  if (data.new != null) 
+  if (data.new != null)
     chat.push({
       id: null,
       msg: data.new.name + " joined the game",
       color: "#56e33d"
     });
-    else {
+  else {
     chat.push({
       id: null,
       msg: data.old.name + " left the game",
@@ -44,13 +59,11 @@ socket.on("players", data => {
     });
 
     chat.forEach(c => {
-      if (c.id === data.old.id)
-      {
+      if (c.id === data.old.id) {
         c.id = data.old.name;
       }
     })
 
-    world.destroyBody(players[data.old.id].body);
     delete players[data.old.id];
   }
 
@@ -58,31 +71,42 @@ socket.on("players", data => {
     chat.splice(0, 1);
   }
 
-  var vel = localPlayer.vel || { x: 0, y: 0 };
-  var pos = localPlayer.pos || {x:0,y:0};
+  var vel = localPlayer.vel || {
+    x: 0,
+    y: 0
+  };
+  var pos = localPlayer.pos || {
+    x: 0,
+    y: -50
+  };
 
   localPlayer = players[socket.id];
 
-  localPlayer.vel = vel || { x: 0, y: 0 };
+  localPlayer.vel = vel || {
+    x: 0,
+    y: 0
+  };
   localPlayer.pos = pos;
 
   Object.keys(players).forEach(id => {
     var player = players[id];
 
-    if (player.body == null && player.name != "connecting")
-    {
-      player.body = world.createBody({type:"dynamic",position:planck.Vec2(0,0)});
+    if (!player.body && player.name != "connecting") {
+      player.body = world.createBody({
+        type: "dynamic",
+        position: planck.Vec2(0, 0)
+      });
 
       player.body.createFixture({
         shape: planck.Box(12, 20, planck.Vec2(0, 0), 0)
       });
 
-      player.body.setPosition(planck.Vec2(0,-50));
+      player.body.setPosition(planck.Vec2(player.pos.x, player.pos.y));
 
       player.body.setMassData({
-        mass : 2,
-        center : planck.Vec2(),
-        I : 1
+        mass: 2,
+        center: planck.Vec2(),
+        I: 1
       })
 
       player.body.m_awakeFlag = true;
@@ -103,7 +127,15 @@ socket.on("chat", data => {
 });
 
 socket.on("move", data => {
-  if (typeof players[data.id] != "undefined" && data.id != localPlayer.id) players[data.id].pos = data.pos;
+  if (typeof players[data.id] != "undefined" && data.id != localPlayer.id) {
+    if (Vector.distance(players[data.id].body.c_position.c, data.pos) > 20)
+      players[data.id].body.setPosition(data.pos)
+
+    players[data.id].body.setLinearVelocity(data.vel);
+    players[data.id].body.setAngle(data.ang);
+    players[data.id].body.setAngularVelocity(data.angvel);
+  };
+
 });
 
 document.getElementById("chatprompt").onkeydown = e => {

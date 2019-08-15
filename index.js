@@ -9,7 +9,9 @@ const PORT = process.env.PORT || 80;
 var players = {};
 
 app.engine("html", require("ejs").renderFile);
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({
+  extended: true
+}));
 app.use(express.json());
 
 app.get("/", (req, res) => {
@@ -17,18 +19,20 @@ app.get("/", (req, res) => {
 });
 
 app.post("/", (req, res) => {
-  res.render(__dirname + "/files/html/index.html", { name: req.body.name });
+  res.render(__dirname + "/files/html/index.html", {
+    name: req.body.name
+  });
 });
 
 app.get("/script/:script", (req, res) => {
   res.sendFile(__dirname + "/files/js/" + req.params.script + ".js");
 });
 
-app.get("/image/:img",(req,res) => {
+app.get("/image/:img", (req, res) => {
   res.sendFile(__dirname + "/files/images/" + req.params.img + ".png");
 })
 
-app.get("/mp3/:img",(req,res) => {
+app.get("/mp3/:img", (req, res) => {
   res.sendFile(__dirname + "/files/mp3/" + req.params.img + ".mp3");
 })
 
@@ -40,24 +44,43 @@ io.on("connection", socket => {
   players[socket.id] = {
     name: "connecting",
     id: socket.id,
-    pos: { x: 0, y: 0 },
-    dir: { x: 0, y: 0 },
-    vel: { x: 0, y: 0 },
+    pos: {
+      x: 0,
+      y: -50
+    },
+    dir: {
+      x: 0,
+      y: 0
+    },
+    vel: {
+      x: 0,
+      y: 0
+    },
+    ang: {
+      x: 0,
+      y: 0
+    },
+    angvel: {
+      x: 0,
+      y: 0
+    },
     health: 100,
     cash: 100,
     minerals: {},
     mass: 5,
-    color:
-      "#" +
+    color: "#" +
       (Math.round(Math.random() * (16777215 - 11184810)) + 11184810).toString(
         16
       ),
-      body:null
+    body: null
   };
 
   socket.on("init", data => {
     players[socket.id].name = data.name;
-    io.emit("players", { players: players, new: players[socket.id] });
+    io.emit("players", {
+      players: players,
+      new: players[socket.id]
+    });
     console.log("Initializing " + data.name);
     console.log(players);
   });
@@ -78,11 +101,22 @@ io.on("connection", socket => {
   socket.on("move", data => {
     io.emit("move", data);
 
-    if (typeof players[data.id] != "undefined") players[data.id].pos = data.pos;
+    if (typeof players[data.id] != "undefined" && players[data.id].body != null) {
+      players[data.id].pos = data.pos;
+      players[data.id].ang = data.ang;
+      players[data.id].angvel = data.angvel;
+    }
   });
 
+  socket.on("body", data => {
+    players[socket.id].body = data.body;
+  })
+
   socket.on("disconnect", () => {
-    io.emit("players", { players: players, old: players[socket.id] });
+    io.emit("players", {
+      players: players,
+      old: players[socket.id]
+    });
     console.log("Player left " + players[socket.id].name)
     delete players[socket.id];
   });
