@@ -33,7 +33,8 @@ var frameCount = 0;
 var fps = 0;
 
 socket.emit("init", {
-  name: socketName
+  name: socketName,
+  color: socketColor
 });
 
 socket.on("players", data => {

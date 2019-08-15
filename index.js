@@ -20,7 +20,8 @@ app.get("/", (req, res) => {
 
 app.post("/", (req, res) => {
   res.render(__dirname + "/files/html/index.html", {
-    name: req.body.name
+    name: req.body.name,
+    color: req.body.color
   });
 });
 
@@ -71,6 +72,7 @@ io.on("connection", socket => {
 
   socket.on("init", data => {
     players[socket.id].name = data.name;
+    players[socket.id].color = data.color == "" ? players[socket.id].color : data.color;
     io.emit("players", {
       players: players,
       new: players[socket.id]

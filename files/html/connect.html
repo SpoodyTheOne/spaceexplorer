@@ -1,16 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Connect to Space Explorer</title>
-  </head>
-  <body>
-    <form action="/" method="POST" id="form">
-      <label for="name">Name:</label><br />
-      <input name="name" id="name" /><br /><br />
-      <button>Connect</button>
-    </form>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>Connect to Space Explorer</title>
+</head>
+
+<body>
+  <form action="/" method="POST" id="form">
+    <label for="name">Name:</label><br />
+    <input name="name" id="name" /><br /><br />
+    <input type="color" name="color" list="rainbow" value="#ee1111"><br><br>
+    <button>Connect</button>
+  </form>
+
+  <datalist id="rainbow">
+    <option value="#ee1111">Red</option>
+    <option value="#f09e0a">Orange</option>
+    <option value="#eeee11">Yellow</option>
+    <option value="#118011">Green</option>
+    <option value="#1111ee">Blue</option>
+</datalist>
+</body>
+
 </html>
