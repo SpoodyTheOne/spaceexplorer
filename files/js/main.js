@@ -39,10 +39,11 @@ socket.emit("init", {
 socket.on("players", data => {
   //console.log(data.players);
 
-    Object.keys(players).forEach(id => {
-      var player = players[id];
+  Object.keys(players).forEach(id => {
+    var player = players[id];
+    if (player.body != null)
       world.destroyBody(player.body);
-    })
+  })
 
   players = data.players;
   if (data.new != null)
@@ -102,12 +103,18 @@ socket.on("players", data => {
       });
 
       player.body.setPosition(planck.Vec2(player.pos.x, player.pos.y));
+      player.body.setAngle(player.ang);
 
       player.body.setMassData({
         mass: 2,
         center: planck.Vec2(),
         I: 1
       })
+
+      player.body.setAngularVelocity(player.angvel);
+      player.body.setLinearVelocity(planck.Vec2(player.vel.x, player.vel.y));
+
+      player.body.setAngularDamping(1.1);
 
       player.body.m_awakeFlag = true;
       player.body.m_autoSleepFlag = false

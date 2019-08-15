@@ -56,14 +56,8 @@ io.on("connection", socket => {
       x: 0,
       y: 0
     },
-    ang: {
-      x: 0,
-      y: 0
-    },
-    angvel: {
-      x: 0,
-      y: 0
-    },
+    ang: 0,
+    angvel: 0,
     health: 100,
     cash: 100,
     minerals: {},

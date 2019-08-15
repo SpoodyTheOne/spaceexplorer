@@ -73,12 +73,22 @@ function game() {
       y: Math.sin(localPlayer.body.getAngle() + Math.PI / 2)
     };
 
+    var forwardRand = {
+      x: Math.cos(localPlayer.body.getAngle() + Math.PI / 2+(Math.random()-.5)),
+      y: Math.sin(localPlayer.body.getAngle() + Math.PI / 2+(Math.random()-.5))
+    };
+
     if (dir.y != 0 && totalFrames % 2 == 0) {
       playSound("20hz");
-      particle({type:"rect",vel:forward,pos:Vector.add(localPlayer.body.getPosition(),Vector.mult(forward,{x:18,y:18})),size:8})
+      particle({type:"rect",vel:forwardRand,pos:Vector.add(localPlayer.body.getPosition(),Vector.mult(forward,{x:26,y:26})),size:8,life:40,color:"#aaaaaa"})
+      particle({type:"rect",vel:forwardRand,pos:Vector.add(localPlayer.body.getPosition(),Vector.mult(forward,{x:26,y:26})),size:8,life:20,color:"#ffaa00"})
+      particle({type:"rect",vel:forwardRand,pos:Vector.add(localPlayer.body.getPosition(),Vector.mult(forward,{x:26,y:26})),size:8,life:10,color:"#ff3300"})
     }
 
     localPlayer.pos = pos;
+    localPlayer.ang = localPlayer.body.getAngle();
+    localPlayer.angvel = localPlayer.body.m_angularVelocity;
+    localPlayer.vel = localPlayer.body.c_velocity.v;
 
     localPlayer.body.applyForceToCenter(planck.Vec2(forward.x, forward.y).mul(100 * dir.y, 100 * dir.y));
 
