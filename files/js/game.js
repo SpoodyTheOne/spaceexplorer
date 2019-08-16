@@ -143,7 +143,8 @@ function game() {
       pos: localPlayer.body.getPosition(),
       vel: localPlayer.body.c_velocity.v,
       ang: localPlayer.body.getAngle(),
-      angvel: localPlayer.body.m_angularVelocity
+      angvel: localPlayer.body.m_angularVelocity,
+      keys: keys
     });
 
     //localPlayer.vel.x /= 1.15;
@@ -227,6 +228,62 @@ function game() {
       ctx.fillRect(p.x - (length.width / 2 + padding / 2), p.y - (50 + padding / 2), length.width + padding, 12 + padding);
       ctx.fillStyle = player.color;
       ctx.fillText(player.name, p.x, p.y - 50);
+
+      if (player.keys["w"] || player.keys["W"])
+      {
+        var forward = {
+          x: Math.cos(player.body.getAngle() + Math.PI / 2),
+          y: Math.sin(player.body.getAngle() + Math.PI / 2)
+        };
+    
+        var forwardRand = {
+          x: Math.cos(player.body.getAngle() + Math.PI / 2 + (Math.random() - .5)),
+          y: Math.sin(player.body.getAngle() + Math.PI / 2 + (Math.random() - .5))
+        };
+
+        particle({
+          type: "rect",
+          vel: Vector.add(Vector.div(player.body.c_velocity.v, {
+            x: 100,
+            y: 100
+          }), forwardRand),
+          pos: Vector.add(player.body.getPosition(), Vector.mult(forward, {
+            x: 26,
+            y: 26
+          })),
+          size: 8,
+          life: 40,
+          color: "#aaaaaa"
+        })
+        particle({
+          type: "rect",
+          vel: Vector.add(Vector.div(player.body.c_velocity.v, {
+            x: 100,
+            y: 100
+          }), forwardRand),
+          pos: Vector.add(player.body.getPosition(), Vector.mult(forward, {
+            x: 26,
+            y: 26
+          })),
+          size: 8,
+          life: 20,
+          color: "#ffaa00"
+        })
+        particle({
+          type: "rect",
+          vel: Vector.add(Vector.div(player.body.c_velocity.v, {
+            x: 100,
+            y: 100
+          }), forwardRand),
+          pos: Vector.add(player.body.getPosition(), Vector.mult(forward, {
+            x: 26,
+            y: 26
+          })),
+          size: 8,
+          life: 10,
+          color: "#ff3300"
+        })
+      }
     }
   })
 

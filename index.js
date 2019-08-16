@@ -15,7 +15,7 @@ app.use(express.urlencoded({
 app.use(express.json());
 
 app.get("/", (req, res) => {
-  res.sendFile(__dirname + "/files/html/connect.html");
+  res.render(__dirname + "/files/html/connect.html",{online:Object.keys(players).length});
 });
 
 app.post("/", (req, res) => {
@@ -59,6 +59,7 @@ io.on("connection", socket => {
     },
     fuel:2000,
     maxFuel:2000,
+    keys: {},
     ang: 0,
     angvel: 0,
     health: 100,
@@ -104,6 +105,8 @@ io.on("connection", socket => {
       players[data.id].pos = data.pos;
       players[data.id].ang = data.ang;
       players[data.id].angvel = data.angvel;
+
+      players[data.id].keys = data.keys;
     }
   });
 

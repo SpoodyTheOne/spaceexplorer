@@ -142,6 +142,10 @@ socket.on("move", data => {
     players[data.id].body.setLinearVelocity(data.vel);
     players[data.id].body.setAngle(data.ang);
     players[data.id].body.setAngularVelocity(data.angvel);
+
+    players[data.id].keys = data.keys;
+
+    //players[data.id].ang = data.ang;
   };
 
 });
