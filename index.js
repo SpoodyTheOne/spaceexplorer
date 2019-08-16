@@ -8,6 +8,8 @@ const PORT = process.env.PORT || 80;
 
 var players = {};
 
+var planets = {};
+
 app.engine("html", require("ejs").renderFile);
 app.use(express.urlencoded({
   extended: true
@@ -48,6 +50,7 @@ app.get("/css/:img", (req, res) => {
 app.get("/download",(req,res) => {
   res.download(__dirname + "/files/SpaceExplorerInstaller.exe")
 })
+
 
 
 io.on("connection", socket => {
@@ -124,6 +127,15 @@ io.on("connection", socket => {
 
   socket.on("body", data => {
     players[socket.id].body = data.body;
+  })
+
+  socket.on("planets",() => {
+    socket.emit("planets",planets);
+  })
+
+  socket.on("planetChange", (data) => {
+    io.emit("planets",{id:data.id,planet:data.planet});
+    planets[data.id] = data.planet;
   })
 
   socket.on("disconnect", () => {

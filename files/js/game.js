@@ -14,6 +14,8 @@ var ground = world.createBody({
 
 ground.createFixture(planck.Edge(planck.Vec2(-400, 0), planck.Vec2(400, 0)));
 
+var testPlanet = new Planet(1500,0,500,50000,50);
+
 function game() {
   Camera.moveTo(
     Vector.add(
@@ -142,7 +144,7 @@ function game() {
       id: localPlayer.id,
       pos: localPlayer.body.getPosition(),
       vel: localPlayer.body.c_velocity.v,
-      ang: localPlayer.body.getAngle(),
+      ang: localPlayer.ang,
       angvel: localPlayer.body.m_angularVelocity,
       keys: keys
     });
@@ -150,8 +152,12 @@ function game() {
     //localPlayer.vel.x /= 1.15;
     //localPlayer.vel.y /= 1.15;
   }
+  
+  testPlanet.draw();
+  testPlanet.attract(localPlayer.body);
+
   ctx.fillStyle = "#ff0000";
-  ctx.strokeStyle = "#ff0000";
+  ctx.strokeStyle = "#ff0000"
 
   for (var body = world.getBodyList(); body; body = body.getNext()) {
     ctx.save();
