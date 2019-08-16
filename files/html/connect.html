@@ -55,6 +55,16 @@
       box-shadow: 0px 0px 15px #ffffff;
       color: white;
     }
+
+    #changelog
+    {
+      position:absolute;
+      right:0px;
+      top:0px;
+      border-left:2px solid white;
+      border-bottom:2px solid white;
+      padding:12px;
+    }
   </style>
 </head>
 
@@ -68,6 +78,9 @@
 
   <p>Join <%= online %> other player<%= online == 1 ? "" : "s" %></p>
 
+  <div id="changelog">
+  </div>
+
   <datalist id="rainbow">
     <option value="#ee1111">Red</option>
     <option value="#f09e0a">Orange</option>
@@ -76,6 +89,11 @@
     <option value="#1111ee">Blue</option>
   </datalist>
 </body>
+<script
+  src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+  integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8="
+  crossorigin="anonymous"></script>
+<script src="/script/changelog"></script>
 <script>
   function press() {
     document.getElementById("name").value = document.getElementById("name").value.replace(/ /g, "");
@@ -83,6 +101,11 @@
       document.getElementById("name").value = document.getElementById("name").value.substring(0, 15);
     }
   }
+
+  changelogs.forEach(c => {
+    $("#changelog").append(c);
+    console.log(c);
+  })
 </script>
 
 </html>
