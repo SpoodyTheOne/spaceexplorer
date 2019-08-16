@@ -15,7 +15,11 @@ app.use(express.urlencoded({
 app.use(express.json());
 
 app.get("/", (req, res) => {
+  if (req.headers["user-agent"] == "SpaceExplorerClient") {
   res.render(__dirname + "/files/html/connect.html",{online:Object.keys(players).length});
+  } else {
+    res.sendFile(__dirname + "/files/html/download.html");
+  }
 });
 
 app.post("/", (req, res) => {
@@ -35,6 +39,10 @@ app.get("/image/:img", (req, res) => {
 
 app.get("/mp3/:img", (req, res) => {
   res.sendFile(__dirname + "/files/mp3/" + req.params.img + ".mp3");
+})
+
+app.get("/download",(req,res) => {
+  res.download(__dirname + "/files/SpaceExplorerInstaller.exe")
 })
 
 
