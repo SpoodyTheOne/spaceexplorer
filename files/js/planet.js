@@ -13,10 +13,10 @@ class Planet {
     this.richness = r;
     this.body = world.createBody({
       type: "static",
-      position: planck.Vec2(this.pos.x,this.pos.y)
+      position: planck.Vec2(this.pos.x, this.pos.y)
     })
 
-    this.body.createFixture(planck.Circle(planck.Vec2(0,0),this.size))
+    this.body.createFixture(planck.Circle(planck.Vec2(0, 0), this.size))
 
     this.attract = function (other) {
       var force =

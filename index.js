@@ -41,6 +41,10 @@ app.get("/mp3/:img", (req, res) => {
   res.sendFile(__dirname + "/files/mp3/" + req.params.img + ".mp3");
 })
 
+app.get("/css/:img", (req, res) => {
+  res.sendFile(__dirname + "/files/css/" + req.params.img + ".css");
+})
+
 app.get("/download",(req,res) => {
   res.download(__dirname + "/files/SpaceExplorerInstaller.exe")
 })
