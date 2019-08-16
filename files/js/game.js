@@ -400,6 +400,12 @@ function keyPressed(key) {
           });
         } else if (cmd === "!stats") {
           advancedStats = !advancedStats;
+        } else if (cmd === "!menu" || cmd === "!exit")
+        {
+          window.location.replace(window.location);
+        } else if (cmd === "!rejoin" || cmd === "!reload")
+        {
+          window.location.reload();
         }
         //#endregion
       } else if ($chat.val() != "") {
