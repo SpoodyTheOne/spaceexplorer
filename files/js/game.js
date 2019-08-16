@@ -1,7 +1,7 @@
 //#region game
 
-planck.internal.Settings.maxTranslation = 20
-planck.internal.Settings.maxTranslationSquared = planck.internal.Settings.maxTranslation * planck.internal.Settings.maxTranslation 
+planck.internal.Settings.maxTranslation = 125
+planck.internal.Settings.maxTranslationSquared = planck.internal.Settings.maxTranslation * planck.internal.Settings.maxTranslation
 
 var world = planck.World({
   gravity: planck.Vec2(0, 0)
@@ -29,11 +29,12 @@ function game() {
 
   var groundPos = ground.getPosition();
 
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = "#000000";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
 
   //star background
 
-  ctx.fillStyle = "#000000";
+  //ctx.drawImage(img_stars,0,0);
   /*
     Object.keys(players).forEach(id => {
       var player = players[id];
@@ -77,15 +78,54 @@ function game() {
     };
 
     var forwardRand = {
-      x: Math.cos(localPlayer.body.getAngle() + Math.PI / 2+(Math.random()-.5)),
-      y: Math.sin(localPlayer.body.getAngle() + Math.PI / 2+(Math.random()-.5))
+      x: Math.cos(localPlayer.body.getAngle() + Math.PI / 2 + (Math.random() - .5)),
+      y: Math.sin(localPlayer.body.getAngle() + Math.PI / 2 + (Math.random() - .5))
     };
 
-    if (dir.y != 0 && totalFrames % 2 == 0) {
+    if (dir.y != 0 && totalFrames % 2 == 0 && localPlayer.fuel > 0) {
       playSound("20hz");
-      particle({type:"rect",vel:forwardRand,pos:Vector.add(localPlayer.body.getPosition(),Vector.mult(forward,{x:26,y:26})),size:8,life:40,color:"#aaaaaa"})
-      particle({type:"rect",vel:forwardRand,pos:Vector.add(localPlayer.body.getPosition(),Vector.mult(forward,{x:26,y:26})),size:8,life:20,color:"#ffaa00"})
-      particle({type:"rect",vel:forwardRand,pos:Vector.add(localPlayer.body.getPosition(),Vector.mult(forward,{x:26,y:26})),size:8,life:10,color:"#ff3300"})
+      particle({
+        type: "rect",
+        vel: Vector.add(Vector.div(localPlayer.body.c_velocity.v, {
+          x: 100,
+          y: 100
+        }), forwardRand),
+        pos: Vector.add(localPlayer.body.getPosition(), Vector.mult(forward, {
+          x: 26,
+          y: 26
+        })),
+        size: 8,
+        life: 40,
+        color: "#aaaaaa"
+      })
+      particle({
+        type: "rect",
+        vel: Vector.add(Vector.div(localPlayer.body.c_velocity.v, {
+          x: 100,
+          y: 100
+        }), forwardRand),
+        pos: Vector.add(localPlayer.body.getPosition(), Vector.mult(forward, {
+          x: 26,
+          y: 26
+        })),
+        size: 8,
+        life: 20,
+        color: "#ffaa00"
+      })
+      particle({
+        type: "rect",
+        vel: Vector.add(Vector.div(localPlayer.body.c_velocity.v, {
+          x: 100,
+          y: 100
+        }), forwardRand),
+        pos: Vector.add(localPlayer.body.getPosition(), Vector.mult(forward, {
+          x: 26,
+          y: 26
+        })),
+        size: 8,
+        life: 10,
+        color: "#ff3300"
+      })
     }
 
     localPlayer.pos = pos;
@@ -93,7 +133,10 @@ function game() {
     localPlayer.angvel = localPlayer.body.m_angularVelocity;
     localPlayer.vel = localPlayer.body.c_velocity.v;
 
-    localPlayer.body.applyForceToCenter(planck.Vec2(forward.x, forward.y).mul(100 * dir.y, 100 * dir.y));
+    if (localPlayer.fuel > 0 && dir.y != 0) {
+      localPlayer.fuel -= 0.1;
+      localPlayer.body.applyForceToCenter(planck.Vec2(forward.x, forward.y).mul(100 * dir.y, 100 * dir.y));
+    }
 
     socket.emit("move", {
       id: localPlayer.id,
@@ -186,6 +229,25 @@ function game() {
       ctx.fillText(player.name, p.x, p.y - 50);
     }
   })
+
+  if (advancedStats) {
+
+    var pos = Camera.toCamPos(localPlayer.body.getPosition());
+
+    ctx.strokeStyle = "#ff0000";
+
+    ctx.beginPath();
+    ctx.moveTo(pos.x, pos.y);
+    ctx.lineTo(pos.x - (forward.x * 80), pos.y - (forward.y * 80));
+    ctx.stroke();
+
+    ctx.strokeStyle = "#ffff00";
+
+    ctx.beginPath();
+    ctx.moveTo(pos.x, pos.y);
+    ctx.lineTo(pos.x + (localPlayer.body.c_velocity.v.x), pos.y + (localPlayer.body.c_velocity.v.y));
+    ctx.stroke();
+  }
 }
 //#endregion
 
@@ -236,8 +298,18 @@ function ui() {
     ctx.fillText("speed:" + Math.round(Vector.magnitude(localPlayer.body.c_velocity.v) * 100) / 100, 0, 13 * 2);
     ctx.fillText("angvel:" + Math.round(localPlayer.body.m_angularVelocity * 10) / 10, 0, 13 * 3)
     ctx.fillText("position: x:" + (Math.round(localPlayer.body.getPosition().x * 100) / 100) + " y:" + (Math.round(localPlayer.body.getPosition().y * 100) / 100), 0, 13 * 4);
-
+    ctx.fillText("health:" + localPlayer.health + "/" + localPlayer.maxHealth, 0, 13 * 5)
+    ctx.fillText("fuel:" + Math.round(localPlayer.fuel) + "/" + localPlayer.maxFuel, 0, 13 * 6);
   }
+
+  ctx.fillStyle = "#bbbbbb";
+  ctx.fillRect(canvas.width - 250, 15, 225, 20);
+  ctx.fillRect(canvas.width - 250, 15 * 3, 225, 20);
+  ctx.fillStyle = "#11ee11";
+  ctx.fillRect(canvas.width - 250, 15, 220 * (localPlayer.health / localPlayer.maxHealth), 15);
+  ctx.fillStyle = "#fafa11";
+  ctx.fillRect(canvas.width - 250, 15 * 3, 220 * (localPlayer.fuel / localPlayer.maxFuel), 15);
+
 }
 //#endregion
 

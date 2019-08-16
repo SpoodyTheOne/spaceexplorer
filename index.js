@@ -57,9 +57,12 @@ io.on("connection", socket => {
       x: 0,
       y: 0
     },
+    fuel:2000,
+    maxFuel:2000,
     ang: 0,
     angvel: 0,
     health: 100,
+    maxHealth:100,
     cash: 100,
     minerals: {},
     mass: 5,

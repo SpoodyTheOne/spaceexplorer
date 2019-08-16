@@ -15,7 +15,7 @@ function init() {
 document.body.onload = () => {
   init();
   canvasResize();
-  canvas.onmouseover = mousePos;
+  document.body.onmousemove = mousePos;
   canvas.onmousedown = mouseClick;
   canvas.onmouseup = mouseUnClick;
   canvas.oncontextmenu = event => {
