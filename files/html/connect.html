@@ -14,50 +14,54 @@
   <meta property="og:image" content="./image/rocket">
 
   <style>
-  
-    body
-    {
-      background:url("https://www.pixel-creation.com/wp-content/uploads/star-wars-space-background-69-images.jpg");
+    * {
+      margin: 0px;
+      padding: 0px;
+      cursor: url("./image/cursor") 32 32, auto;
+    }
+
+    *:active {
+      cursor: url("./image/cursor_pressed") 32 32, auto;
+    }
+
+    body {
+      background: url("https://www.pixel-creation.com/wp-content/uploads/star-wars-space-background-69-images.jpg");
       background-repeat: no-repeat;
       background-size: cover;
-      color:white;
-      font-family:Arial, Helvetica, sans-serif;
+      color: white;
+      font-family: Arial, Helvetica, sans-serif;
     }
 
-    input
-    {
-      background-color:transparent;
-      border:none;
-      border-bottom:2px solid white;
+    input {
+      background-color: transparent;
+      border: none;
+      border-bottom: 2px solid white;
       box-shadow: 0px 0px 15px #ffffff;
-      padding:5px;
-      color:white;
+      padding: 5px;
+      color: white;
     }
 
-    input[type=color]
-    {
-      border:none;
-      border-bottom:2px solid white;
+    input[type=color] {
+      border: none;
+      border-bottom: 2px solid white;
       box-shadow: 0px 0px 15px #ffffff;
     }
 
-    button
-    {
-      background:none;
-      border:none;
-      border:none;
-      border-bottom:2px solid white;
+    button {
+      background: none;
+      border: none;
+      border: none;
+      border-bottom: 2px solid white;
       box-shadow: 0px 0px 15px #ffffff;
-      color:white;
+      color: white;
     }
-  
   </style>
 </head>
 
 <body>
   <form action="/" method="POST" id="form">
     <label for="name">Name:</label><br />
-    <input name="name" id="name" required onkeydown="press()" maxlength="15"/><br /><br />
+    <input name="name" id="name" required onkeydown="press()" maxlength="15" /><br /><br />
     <input type="color" name="color" list="rainbow" value="#ee1111"><br><br>
     <button>Connect</button>
   </form>
@@ -70,16 +74,15 @@
     <option value="#eeee11">Yellow</option>
     <option value="#118011">Green</option>
     <option value="#1111ee">Blue</option>
-</datalist>
+  </datalist>
 </body>
-  <script>
-    function press()
-    {
-      document.getElementById("name").value = document.getElementById("name").value.replace(/ /g,"");
-      if (document.getElementById("name").value.length > 15)
-      {
-        document.getElementById("name").value = document.getElementById("name").value.substring(0,15);
-      }
+<script>
+  function press() {
+    document.getElementById("name").value = document.getElementById("name").value.replace(/ /g, "");
+    if (document.getElementById("name").value.length > 15) {
+      document.getElementById("name").value = document.getElementById("name").value.substring(0, 15);
     }
-  </script>
+  }
+</script>
+
 </html>
