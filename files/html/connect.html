@@ -58,6 +58,14 @@
       border-bottom: 2px solid white;
       padding: 12px;
     }
+
+    #version
+    {
+      position:fixed;
+      bottom:5px;
+      left:5px;
+      color: white;
+    }
   </style>
 </head>
 
@@ -81,6 +89,8 @@
     <option value="#118011">Green</option>
     <option value="#1111ee">Blue</option>
   </datalist>
+
+  <p id="version">v{{VERSION}}</p>
 </body>
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
   integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8=" crossorigin="anonymous"></script>
@@ -99,6 +109,8 @@
     $("#changelog").append(c);
     console.log(c);
   })
+
+  $("#version").text("v" + version)
 </script>
 
 </html>

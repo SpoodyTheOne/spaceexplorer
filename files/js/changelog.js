@@ -1,4 +1,5 @@
 var changelogs = new Array();
+var version = "0.1.0.2";
 
 changelogs.push(
 `<h2>Changelogs are here!</h2>
