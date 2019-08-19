@@ -14,3 +14,10 @@ changelogs.push(
     <pre>Don't you hate when you get stuck 50 000 000 meters away from everybody else? Fear not, 
 the <strong>!reload</strong> command is here!
 <strong>!reload</strong>,<strong>!rejoin</strong>,<strong>!exit</strong> and <strong>!home</strong> have arrived. Their uses are pretty self explanetory</pre>`);
+
+changelogs.push(
+    `<h2>Improved netcode</h2>
+    <h3>v0.1.0.2</h3>
+    <h3>19/8/2019</h3>
+    <pre>Gone are the days of glithing through your friends because we fixed the netcode!
+Also added new commands. See if you can find out what they are. (hint: !cmds)</pre>`);
