@@ -37,6 +37,10 @@ socket.emit("init", {
   color: socketColor
 });
 
+Math.clamp = function(num,min,max) {
+  return Math.max(Math.min(num,max),min)
+}
+
 socket.on("players", data => {
   //console.log(data.players);
 

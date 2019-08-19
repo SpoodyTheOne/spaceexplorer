@@ -391,9 +391,9 @@ function keyPressed(key) {
       $chat.css("display", "none");
       //#region cmds
       if ($chat.val().startsWith("!")) {
-        var cmd = commands[$chat.val()];
+        var cmd = commands[$chat.val().split(" ")[0]];
         if (typeof cmd == "function") {
-          cmd();
+          cmd($chat.val().split(" "));
         }
         //#endregion
       } else if ($chat.val() != "") {
@@ -459,6 +459,11 @@ addCommand("!rejoin",() => {
 
 addCommand("!chat",() => {
   showChat = !showChat;
+})
+
+addCommand("!volume",(args) => {
+  console.log(args);
+  masterVolume = Math.clamp(parseFloat(args[1]),0,1);
 })
 
 addCommand("!cmds",() => {
