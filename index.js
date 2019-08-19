@@ -116,7 +116,7 @@ io.on("connection", socket => {
   socket.on("move", data => {
     io.emit("move", data);
 
-    if (typeof players[data.id] != "undefined" && players[data.id].body != null) {
+    if (typeof players[data.id] != "undefined") {
       players[data.id].pos = data.pos;
       players[data.id].ang = data.ang;
       players[data.id].angvel = data.angvel;

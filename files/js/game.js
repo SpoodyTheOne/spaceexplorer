@@ -14,7 +14,7 @@ var ground = world.createBody({
 
 ground.createFixture(planck.Edge(planck.Vec2(-400, 0), planck.Vec2(400, 0)));
 
-var testPlanet = new Planet(1500,0,500,50000,50);
+var testPlanet = new Planet(1500, 0, 500, 50000, 50);
 
 function game() {
   Camera.moveTo(
@@ -152,7 +152,7 @@ function game() {
     //localPlayer.vel.x /= 1.15;
     //localPlayer.vel.y /= 1.15;
   }
-  
+
   testPlanet.draw();
   testPlanet.attract(localPlayer.body);
 
@@ -235,13 +235,12 @@ function game() {
       ctx.fillStyle = player.color;
       ctx.fillText(player.name, p.x, p.y - 50);
 
-      if (player.keys["w"] || player.keys["W"])
-      {
+      if (player.keys["w"] || player.keys["W"]) {
         var forward = {
           x: Math.cos(player.body.getAngle() + Math.PI / 2),
           y: Math.sin(player.body.getAngle() + Math.PI / 2)
         };
-    
+
         var forwardRand = {
           x: Math.cos(player.body.getAngle() + Math.PI / 2 + (Math.random() - .5)),
           y: Math.sin(player.body.getAngle() + Math.PI / 2 + (Math.random() - .5))
@@ -328,8 +327,11 @@ var historyIndex = 0;
 
 var advancedStats = false;
 
+var showChat = true;
+
 function ui() {
   //#region chat
+  if (showChat) {
   ctx.fillStyle = "#000000aa";
   ctx.fillRect(20, canvas.height - 270, 500, 250);
   ctx.fillStyle = "#ffffff";
@@ -352,10 +354,12 @@ function ui() {
 
     ctx.fillText(msg, 25, canvas.height - 265 + 15 * i);
   });
+}
   //#endregion
 
   if (advancedStats) {
     ctx.fillStyle = "#00ff00";
+    ctx.textAlign = "left";
     ctx.fillText("fps:" + fps, 0, 0);
     ctx.fillText("velocity: x:" + (Math.round(localPlayer.body.c_velocity.v.x * 100) / 100) + " y:" + (Math.round(localPlayer.body.c_velocity.v.y * 100) / 100), 0, 13);
     ctx.fillText("speed:" + Math.round(Vector.magnitude(localPlayer.body.c_velocity.v) * 100) / 100, 0, 13 * 2);
@@ -387,8 +391,85 @@ function keyPressed(key) {
       $chat.css("display", "none");
       //#region cmds
       if ($chat.val().startsWith("!")) {
-        var cmd = $chat.val();
-        if (cmd == "!online") {
+        var cmd = commands[$chat.val()];
+        if (typeof cmd == "function") {
+          cmd();
+        }
+        //#endregion
+      } else if ($chat.val() != "") {
+        postChat($chat.val());
+      }
+      if ($chat.val() != chatHistory[0]) {
+        chatHistory.reverse();
+        chatHistory.push($chat.val().substring(0,65));
+        chatHistory.reverse();
+      }
+
+      $chat.val("");
+      historyIndex = -1;
+      chatting = false;
+    }
+  }
+  //#endregion
+}
+
+var commands = {};
+
+function addCommand(cmd, callback) {
+  commands[cmd] = callback;
+}
+
+addCommand("!online", () => {
+  chat.push({
+    id: null,
+    msg: "Online players:",
+    color: "#fcba03"
+  });
+  Object.keys(players).forEach(id => {
+    var player = players[id];
+    if (player.name != "connecting") {
+      chat.push({
+        id: null,
+        msg: "    " + player.name,
+        color: player.color
+      });
+    }
+  });
+})
+
+addCommand("!stats", () => {
+  advancedStats = !advancedStats;
+})
+
+addCommand("!exit",() => {
+  window.location.replace(window.location);
+})
+
+addCommand("!menu",() => {
+  window.location.replace(window.location);
+})
+
+addCommand("!reload",() => {
+  window.location.reload();
+})
+
+addCommand("!rejoin",() => {
+  window.location.reload();
+})
+
+addCommand("!chat",() => {
+  showChat = !showChat;
+})
+
+addCommand("!cmds",() => {
+  chat.push({id:null,msg:"Commands:"})
+  Object.keys(commands).forEach(c => {
+    chat.push({id:null,msg:"  " + c,color:"#fcba03"})
+  })
+})
+/*
+
+ if (cmd == "!online") {
           chat.push({
             id: null,
             msg: "Online players:",
@@ -413,20 +494,5 @@ function keyPressed(key) {
         {
           window.location.reload();
         }
-        //#endregion
-      } else if ($chat.val() != "") {
-        postChat($chat.val());
-      }
-      if ($chat.val() != chatHistory[0]) {
-        chatHistory.reverse();
-        chatHistory.push($chat.val());
-        chatHistory.reverse();
-      }
 
-      $chat.val("");
-      historyIndex = -1;
-      chatting = false;
-    }
-  }
-  //#endregion
-}
+*/

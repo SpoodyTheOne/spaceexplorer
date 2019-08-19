@@ -73,21 +73,13 @@ socket.on("players", data => {
     chat.splice(0, 1);
   }
 
-  var vel = localPlayer.vel || {
-    x: 0,
-    y: 0
-  };
-  var pos = localPlayer.pos || {
-    x: 0,
-    y: -50
-  };
+  var vel = localPlayer.body != undefined ? localPlayer.body.c_velocity.v : planck.Vec2(0, 0);
+
+  var pos = localPlayer.body != undefined ? localPlayer.body.getPosition() : planck.Vec2(0, -50)
 
   localPlayer = players[socket.id];
 
-  localPlayer.vel = vel || {
-    x: 0,
-    y: 0
-  };
+  localPlayer.vel = vel;
   localPlayer.pos = pos;
 
   Object.keys(players).forEach(id => {
@@ -113,7 +105,7 @@ socket.on("players", data => {
       })
 
       player.body.setAngularVelocity(player.angvel);
-      player.body.setLinearVelocity(planck.Vec2(player.vel.x, player.vel.y));
+      player.body.setLinearVelocity(player.vel);
 
       player.body.setAngularDamping(1.1);
 
@@ -123,8 +115,6 @@ socket.on("players", data => {
       player.body.isPlayerBody = player;
     }
   })
-
-  //console.log(players[socket.id]);
 });
 
 socket.on("chat", data => {
@@ -136,11 +126,13 @@ socket.on("chat", data => {
 
 socket.on("move", data => {
   if (typeof players[data.id] != "undefined" && data.id != localPlayer.id) {
-    if (Vector.distance(players[data.id].body.c_position.c, data.pos) > 20)
+    if (Vector.distance(players[data.id].body.c_position.c, data.pos) > 10)
       players[data.id].body.setPosition(data.pos)
 
+    if (Math.abs(players[data.id].body.getAngle() - data.ang) > 0.02 * Math.PI)
+      players[data.id].body.setAngle(data.ang);
+
     players[data.id].body.setLinearVelocity(data.vel);
-    players[data.id].body.setAngle(data.ang);
     players[data.id].body.setAngularVelocity(data.angvel);
 
     players[data.id].keys = data.keys;
