@@ -332,8 +332,11 @@ var showChat = true;
 function ui() {
   //#region chat
   if (showChat) {
+  if (!android) {
   ctx.fillStyle = "#000000aa";
   ctx.fillRect(20, canvas.height - 270, 500, 250);
+  }
+  
   ctx.fillStyle = "#ffffff";
   ctx.textBaseline = "top";
   ctx.textAlign = "left";

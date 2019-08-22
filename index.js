@@ -27,7 +27,8 @@ app.get("/", (req, res) => {
 app.post("/", (req, res) => {
   res.render(__dirname + "/files/html/index.html", {
     name: req.body.name,
-    color: req.body.color
+    color: req.body.color,
+    android: req.body.android
   });
 });
 
