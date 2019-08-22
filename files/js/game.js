@@ -354,13 +354,15 @@ function ui() {
 
     if (ctx.measureText(msg) > 200) {}
     ctx.fillStyle = chat.color;
-
-    ctx.fillText(msg, 25, canvas.height - 265 + 15 * i);
+    if (!android)
+      ctx.fillText(msg, 25, canvas.height - 265 + 15 * i);
+    else
+      ctx.fillText(msg,25,15+15*i);
   });
 }
   //#endregion
 
-  if (advancedStats) {
+  if (advancedStats && !android) {
     ctx.fillStyle = "#00ff00";
     ctx.textAlign = "left";
     ctx.fillText("fps:" + fps, 0, 0);

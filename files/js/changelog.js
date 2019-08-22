@@ -1,5 +1,14 @@
 var changelogs = new Array();
-var version = "0.1.0.2";
+var version = "0.1.0.3";
+
+function changelog(title,vers,date,text)
+{
+    changelogs.push(
+        `<h2>${title}</h2>
+        <h3>v${vers}</h3>
+        <h3>${date}</h3>
+        <pre>${text}</pre>`);
+}
 
 changelogs.push(
 `<h2>Changelogs are here!</h2>
@@ -22,3 +31,6 @@ changelogs.push(
     <h3>19/8/2019</h3>
     <pre>Gone are the days of glithing through your friends because we fixed the netcode!
 Also added new commands. See if you can find out what they are. (hint: !cmds)</pre>`);
+
+changelog("Android support","v0.1.0.3","22/08/2019",`Now you can play on the go with android support!
+If you would like to download goto <a href='http://space-explore.herokuapp.com/download/android' download='spaceexplorer.apk'>http://space-explore.herokuapp.com/download/android</a>`)

@@ -25,21 +25,99 @@
         position: fixed;
         left: 50%;
         margin-left: -37.5%;
+        <% if (android != "on") { %>
         top:50%;
+        <% } else { %>
+          top:25%;
+        <% } %>
         z-index:999;
 
         border:none;
-        background:#000000aa;
+        <% if (android != "on") { %>
+          background:#000000aa;
+        <% } else { %>
+          background:none;
+        <% } %>
         outline:none;
         color:white;
         border-bottom: 2px solid white;
         padding:5px;
+      }
+
+      .button
+      {
+        position:relative;
+        z-index:500;
+
+        width:50px;
+        height:50px;
+
+        background-color: white;
+        background-size:contain;
+        outline:none;
+        border:none;
+        border-radius:10px;
+        padding: 30px;
+      }
+
+      #upBtn
+      {
+        background-image: url("/image/boost");
+      }
+
+      #leftBtn
+      {
+        background-image: url("/image/arrow_left");
+      }
+
+      #rightBtn
+      {
+        background-image: url("/image/arrow_right");
+      }
+
+      #controls
+      {
+
+        position:absolute;
+        bottom:55px;
+        left:55px;
+
+      }
+
+      #chatBtn
+      {
+        height:50px;
+        width:50px;
+        position:fixed;
+        padding:0px;
+        font-weight: bolder;
+        left:250px;
+      }
+
+      #controls2
+      {
+        position:absolute;
+        bottom:55px;
+        right:55px;
       }
     </style>
   </head>
   <body>
 
     <input id="chatprompt" style="display:none" maxlength="65">
+
+    <% if (android == "on") { %>
+    <button id="chatBtn" class="button" onpointerdown="keyPressed('Enter');$chat.trigger('focus');">Chat</button>
+
+    <div id="controls">
+    <button id="upBtn" class="button" onpointerdown="keys['w'] = true" onpointerenter="keys['w'] = true" onpointerup="keys['w'] = false" onpointerleave="keys['w'] = false"></button>
+    </div>
+
+    <div id="controls2">
+      <button id="leftBtn" class="button" onpointerdown="keys['a'] = true" onpointerenter="keys['a'] = true" onpointerup="keys['a'] = false" onpointerleave="keys['a'] = false"></button>
+      <button id="rightBtn" class="button" onpointerdown="keys['d'] = true" onpointerenter="keys['d'] = true" onpointerup="keys['d'] = false" onpointerleave="keys['d'] = false"></button>
+    </div>
+    <% } %>
 
   </body>
   <% console.log(android) %>

@@ -10,6 +10,9 @@ function init() {
   canvas = document.createElement("canvas");
   document.body.appendChild(canvas);
   ctx = canvas.getContext("2d");
+  
+  if (android)
+    ctx.scale(8,8);
 }
 
 document.body.onload = () => {
@@ -63,6 +66,6 @@ function canvasResize() {
   canvas.style.width = window.innerWidth + "px";
   canvas.style.height = window.innerHeight + "px";
 
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
+  canvas.width = window.innerWidth * (android ? 2 : 1);
+  canvas.height = window.innerHeight * (android ? 2 : 1);
 }
