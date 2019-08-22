@@ -17,8 +17,8 @@ app.use(express.urlencoded({
 app.use(express.json());
 
 app.get("/", (req, res) => {
-  if (req.headers["user-agent"] == "SpaceExplorerClient") {
-  res.render(__dirname + "/files/html/connect.html",{online:Object.keys(players).length});
+  if (req.headers["user-agent"] == "SpaceExplorerClient" || req.headers["user-agent"] == "SpaceExplorerAndroid") {
+  res.render(__dirname + "/files/html/connect.html",{online:Object.keys(players).length,android:req.headers["user-agent"] == "SpaceExplorerAndroid"});
   } else {
     res.sendFile(__dirname + "/files/html/download.html");
   }

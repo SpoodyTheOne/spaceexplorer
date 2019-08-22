@@ -75,6 +75,7 @@
     <label for="name">Name:</label><br />
     <input name="name" id="name" required onkeydown="press()" maxlength="15" /><br /><br />
     <input type="color" name="color" list="rainbow" value="#ee1111"><br><br>
+    <input id="android" name="android" type="checkbox" style="display:none">;
     <button>Connect</button>
   </form>
   <br>
@@ -112,6 +113,10 @@
   })
 
   $("#version").text("v" + version)
+
+  <% if (android) { %>
+    document.getElementById("android").checked = true;
+    <% } %>
 </script>
 
 </html>
