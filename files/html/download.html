@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,32 +15,40 @@
     <link rel="stylesheet" href="/css/style">
 
 </head>
+
 <body>
     <h1 id="title">Space Explorer</h1>
     <div class="parralax"></div>
     <div style="width:100%; height:70vh"></div>
 
     <h2 style="margin-top:150px;">What is space explorer?</h2>
-    <p style="margin-bottom:150px">Space explorer is a really great game made by <a href="https://discordapp.com/">@Zwix#7438</a> and <a href="https://discordapp.com/">@Spoody#3173</a></p>
+    <p style="margin-bottom:150px">Space explorer is a really great game made by <a
+            href="https://discordapp.com/">@Zwix#7438</a> and <a href="https://discordapp.com/">@Spoody#3173</a></p>
 
     <div class="parralax2"></div>
 
     <h2 style="margin-top:150px;">How do i play it?</h2>
-    <p>We would prefer if you were to <a href="/download" download="SpaceExplorerInstaller.exe">download</a> the game. But if running unsigned .exe files isn't your cuppa tea <a href="javascript:void(0)" id="browser">we have a browser version aswell</a></p>
-    <p style="margin-bottom:250px">The downloadable version is basically just a custom webbrowser that is only able to play Space Explorer</p>
-
-<form action="/" method=POST id="form" style="display:none"><input name="name" id="name"><input name="android" id="android" type="checkbox"></form>
+    <% if (!android) { %>
+    <p>We would prefer if you were to <a href="/download" download="SpaceExplorerInstaller.exe">download</a> the game.
+        But if running unsigned .exe files isn't your cuppa tea <a href="javascript:void(0)" id="browser">we have a
+            browser version aswell</a></p>
+    <p style="margin-bottom:250px">The downloadable version is basically just a custom webbrowser that is only able to
+        play Space Explorer</p>
+    <% } else { %>
+        <p>If you want to play the game on your phone you should tap <a href="/download/android" download="spaceexplorer.apk">here</a> to download it</p>
+    <% } %>
+    <form action="/" method=POST id="form" style="display:none"><input name="name" id="name"><input name="android"
+            id="android" type="checkbox"></form>
 </body>
 <script>
+    document.getElementById("browser").onclick = () => {
 
-document.getElementById("browser").onclick = () => {
+        var name = prompt("What is your name?");
 
-    var name = prompt("What is your name?");
+        document.getElementById("name").value = name.substring(0, 15);
 
-    document.getElementById("name").value = name.substring(0,15);
-
-    document.getElementById("form").submit();
-}
-
+        document.getElementById("form").submit();
+    }
 </script>
+
 </html>

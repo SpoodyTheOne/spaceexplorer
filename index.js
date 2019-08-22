@@ -20,7 +20,11 @@ app.get("/", (req, res) => {
   if (req.headers["user-agent"] == "SpaceExplorerClient" || req.headers["user-agent"] == "SpaceExplorerAndroid") {
   res.render(__dirname + "/files/html/connect.html",{online:Object.keys(players).length,android:req.headers["user-agent"] == "SpaceExplorerAndroid"});
   } else {
-    res.sendFile(__dirname + "/files/html/download.html");
+
+    var ua = req.headers["user-agent"].toLowerCase();
+    var android = /(android)/i.test(ua)
+
+    res.render(__dirname + "/files/html/download.html",{android:android});
   }
 });
 
@@ -52,7 +56,9 @@ app.get("/download",(req,res) => {
   res.download(__dirname + "/files/SpaceExplorerInstaller.exe")
 })
 
-
+app.get("/download/android",(req,res) => {
+  res.download(__dirname + "/files/spaceexplorer.apk");
+})
 
 io.on("connection", socket => {
 
