@@ -42,7 +42,8 @@
     <input id="chatprompt" style="display:none" maxlength="65">
 
   </body>
-  <script>var socketName = "<%= name %>";var socketColor = "<%= color %>"; const android = <%= android %></script>
+  <% console.log(android) %>
+  <script>var socketName = "<%= name %>";var socketColor = "<%= color %>"; const android = <%= android == "on" ? true : false %></script>
   <script src="/script/images"></script>
   <script src="/script/audio"></script>
   <script src="https://cdn.jsdelivr.net/npm/planck-js@0.2/dist/planck.js"></script>
