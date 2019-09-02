@@ -212,7 +212,10 @@ function game() {
       ctx.stroke()
 
     if (body.isPlayerBody) {
-      ctx.drawImage(img_rocket, -32, -32);
+      ctx.drawImage(IMAGES.ROCKET, -32, -32);
+    } else if (body.image)
+    {
+      ctx.drawImage(body.image, -body.image.width/2, -body.image.height/2);
     }
     ctx.restore();
   }
@@ -332,34 +335,34 @@ var showChat = true;
 function ui() {
   //#region chat
   if (showChat) {
-  if (!android) {
-  ctx.fillStyle = "#000000aa";
-  ctx.fillRect(20, canvas.height - 270, 500, 250);
-  }
-  
-  ctx.fillStyle = "#ffffff";
-  ctx.textBaseline = "top";
-  ctx.textAlign = "left";
-  ctx.font = "13px Arial";
-
-  chat.forEach((chat, i) => {
-    var msg = "";
-    if (chat.id == null) {
-      msg = chat.msg;
-    } else if (typeof players[chat.id] != "undefined") {
-      msg = players[chat.id].name + ": " + chat.msg;
-    } else {
-      msg = chat.id + ": " + chat.msg;
+    if (!android) {
+      ctx.fillStyle = "#000000aa";
+      ctx.fillRect(20, canvas.height - 270, 500, 250);
     }
 
-    if (ctx.measureText(msg) > 200) {}
-    ctx.fillStyle = chat.color;
-    if (!android)
-      ctx.fillText(msg, 25, canvas.height - 265 + 15 * i);
-    else
-      ctx.fillText(msg,25,15+15*i);
-  });
-}
+    ctx.fillStyle = "#ffffff";
+    ctx.textBaseline = "top";
+    ctx.textAlign = "left";
+    ctx.font = "13px Arial";
+
+    chat.forEach((chat, i) => {
+      var msg = "";
+      if (chat.id == null) {
+        msg = chat.msg;
+      } else if (typeof players[chat.id] != "undefined") {
+        msg = players[chat.id].name + ": " + chat.msg;
+      } else {
+        msg = chat.id + ": " + chat.msg;
+      }
+
+      if (ctx.measureText(msg) > 200) {}
+      ctx.fillStyle = chat.color;
+      if (!android)
+        ctx.fillText(msg, 25, canvas.height - 265 + 15 * i);
+      else
+        ctx.fillText(msg, 25, 15 + 15 * i);
+    });
+  }
   //#endregion
 
   if (advancedStats && !android) {
@@ -406,7 +409,7 @@ function keyPressed(key) {
       }
       if ($chat.val() != chatHistory[0]) {
         chatHistory.reverse();
-        chatHistory.push($chat.val().substring(0,65));
+        chatHistory.push($chat.val().substring(0, 65));
         chatHistory.reverse();
       }
 
@@ -446,35 +449,42 @@ addCommand("!stats", () => {
   advancedStats = !advancedStats;
 })
 
-addCommand("!exit",() => {
+addCommand("!exit", () => {
   window.location.replace(window.location);
 })
 
-addCommand("!menu",() => {
+addCommand("!menu", () => {
   window.location.replace(window.location);
 })
 
-addCommand("!reload",() => {
+addCommand("!reload", () => {
   window.location.reload();
 })
 
-addCommand("!rejoin",() => {
+addCommand("!rejoin", () => {
   window.location.reload();
 })
 
-addCommand("!chat",() => {
+addCommand("!chat", () => {
   showChat = !showChat;
 })
 
-addCommand("!volume",(args) => {
+addCommand("!volume", (args) => {
   console.log(args);
-  masterVolume = Math.clamp(parseFloat(args[1]),0,1);
+  masterVolume = Math.clamp(parseFloat(args[1]), 0, 1);
 })
 
-addCommand("!cmds",() => {
-  chat.push({id:null,msg:"Commands:"})
+addCommand("!cmds", () => {
+  chat.push({
+    id: null,
+    msg: "Commands:"
+  })
   Object.keys(commands).forEach(c => {
-    chat.push({id:null,msg:"  " + c,color:"#fcba03"})
+    chat.push({
+      id: null,
+      msg: "  " + c,
+      color: "#fcba03"
+    })
   })
 })
 /*
