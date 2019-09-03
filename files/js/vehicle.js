@@ -1,4 +1,4 @@
-class Part {
+/*class Part {
 
     constructor(img_, health_, mass_, pos_, ang_) {
         this.img = img_ || IMAGES.ROCKET;
@@ -102,31 +102,30 @@ class Part {
 
         }
 
-        /* 
-        ###-- handled by displacement renderer in game.js --###
-
-        this.draw = function()
-        {
-
-            //draw stuff
-        
-        }
-        */
-
-
     }
 
 }
+*/
 
 class Vehicle {
 
-    constructor() {
+    constructor(img_,mhp_,mf_,speed_,fp_,mass_,exhaust_) {
 
-        this.corePart = new Part(IMAGES.X25TEST, 100, 15, {
-            x: 0,
-            y: 0
-        }, 0)
+        this.img = img_ || IMAGES.X25TEST;
+        this.maxHealth = mhp_ || 100;
+        this.health = mhp_ || 100;
+        this.speed = speed_ || 1;
+        this.mass = mass_ || 2;
+        this.exhaust = exhaust_ || {x:0,y:0};
+        this.maxFuel = mf_ || 2000;
+        this.fuel = mf_ || 2000;
+        this.ammo = 200;
+        this.firePower = fp_;
 
     }
 
 }
+
+var VEHICLE = {};
+
+VEHICLE.TEST = new Vehicle(IMAGES.ROCKET,100,2000,1,1,2,{x:26,y:26});

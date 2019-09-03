@@ -116,7 +116,20 @@ socket.on("players", data => {
       player.body.m_awakeFlag = true;
       player.body.m_autoSleepFlag = false
 
+      if (player.vehicle == null) {
+        player.vehicle = VEHICLE.TEST;
+      }
+
+      player.body.setMassData({
+        mass: player.vehicle.mass,
+        center: planck.Vec2(),
+        I: 1
+      })
+
+      player.body.m_bulletFlag = true
+
       player.body.isPlayerBody = player;
+
     }
   })
 });
@@ -173,3 +186,8 @@ setInterval(() => {
   fps = frameCount;
   frameCount = 0;
 }, 1000);
+
+Math.clamp = function(num,a,b)
+{
+  return Math.max(Math.min(num,a),b)
+}

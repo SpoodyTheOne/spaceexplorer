@@ -79,8 +79,6 @@ io.on("connection", socket => {
       x: 0,
       y: 0
     },
-    fuel:2000,
-    maxFuel:2000,
     keys: {},
     ang: 0,
     angvel: 0,
@@ -88,12 +86,14 @@ io.on("connection", socket => {
     maxHealth:100,
     cash: 100,
     minerals: {},
+    maxMinerals: 20,
     mass: 5,
     color: "#" +
       (Math.round(Math.random() * (16777215 - 11184810)) + 11184810).toString(
         16
       ),
-    body: null
+    body: null,
+    vehicle: null
   };
 
   socket.on("init", data => {
@@ -129,6 +129,7 @@ io.on("connection", socket => {
       players[data.id].angvel = data.angvel;
 
       players[data.id].keys = data.keys;
+      players[data.id].vehicle = data.vehicle;
     }
   });
 
